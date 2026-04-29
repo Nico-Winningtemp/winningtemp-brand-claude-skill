@@ -1,0 +1,24 @@
+# Sensitive / internal-only files that must never be pushed to the public repo.
+# Keep these on SharePoint only.
+assets/Visual-identity-source.pptx
+assets/logos/extracted-from-pptx/
+
+# Skill extractor's intermediate output (re-generated on demand)
+.extracted/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+__pycache__/
+*.pyc
+*.pyo
+
+# Slim build output is committed (pre-built for non-technical users to download).
+# Uncomment to exclude:
+# dist/slim/
+
+# Test artifacts
+/tmp/wt-*.pptx

@@ -1,0 +1,67 @@
+{
+  "$schema_version": "1.0",
+  "source": "Visual identity.pptx (theme1.xml + slide content), April 2026 snapshot",
+  "primary": {
+    "purple": {
+      "hex": "#7F2696",
+      "rgb": [127, 38, 150],
+      "role": "Primary brand color. Use for: hero backgrounds, primary CTAs, logo (default), key headlines, brand impact moments. Most distinctive Winningtemp color.",
+      "names": ["Dark Purple", "Winningtemp Purple", "Primary Purple"]
+    },
+    "light_purple": {
+      "hex": "#DDD3F2",
+      "rgb": [221, 211, 242],
+      "role": "Secondary background. Use for: soft section backgrounds, content cards, subtle highlights. Pairs with purple text.",
+      "names": ["Light Purple"]
+    },
+    "gray": {
+      "hex": "#F1F1F1",
+      "rgb": [241, 241, 241],
+      "role": "Neutral background. Use for: large flat backgrounds, content separation, low-emphasis areas.",
+      "names": ["Gray", "Background Gray"]
+    }
+  },
+  "secondary": {
+    "extended_purple_light": {
+      "hex": "#F2E9F3",
+      "rgb": [242, 233, 243],
+      "role": "Very light purple wash. Use for: subtle dividers, table row banding, hover states.",
+      "names": ["Pale Purple"]
+    },
+    "wave": {
+      "hex": "#C0DAD8",
+      "rgb": [192, 218, 216],
+      "role": "Freshness accent. Use for: highlights, icons, secondary callouts, growth/positive data points. Reserve for accent — never primary.",
+      "names": ["Wave", "Mint Wave"]
+    },
+    "red_warning": {
+      "hex": "#D64545",
+      "rgb": [214, 69, 69],
+      "role": "Warning / negative. Use ONLY for: error states, regression indicators, declining metrics, alerts. Never for decoration.",
+      "names": ["Warning Red"],
+      "note": "Hex approximate — confirm against latest Visual identity.pptx if exact match required."
+    }
+  },
+  "support": {
+    "black": {
+      "hex": "#18181B",
+      "rgb": [24, 24, 27],
+      "role": "Primary text on light backgrounds. Default body color. Logo black variant.",
+      "names": ["Black", "Near Black", "Text Black"]
+    },
+    "white": {
+      "hex": "#FFFFFF",
+      "rgb": [255, 255, 255],
+      "role": "Primary text on dark/purple backgrounds. Logo white variant. Card backgrounds on purple sections.",
+      "names": ["White"]
+    }
+  },
+  "rules": {
+    "logo_colors": ["#7F2696", "#FFFFFF", "#18181B"],
+    "cta_colors_allowed": ["#7F2696", "#DDD3F2", "#F1F1F1"],
+    "cta_colors_forbidden": ["#F2E9F3", "#C0DAD8", "#D64545"],
+    "body_text_colors": ["#18181B", "#FFFFFF"],
+    "never_use_for_body_text": ["#7F2696", "#DDD3F2", "#F1F1F1", "#C0DAD8"],
+    "comment": "Body copy must be Black on light or White on dark. Other brand colors may appear in display headlines/expressive contexts only."
+  }
+}

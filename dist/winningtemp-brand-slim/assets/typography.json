@@ -1,0 +1,46 @@
+{
+  "$schema_version": "1.0",
+  "source": "Visual identity.pptx slides 11-12, April 2026 snapshot",
+  "headings": {
+    "family": "Poppins",
+    "fallbacks": ["Helvetica Neue", "Arial", "sans-serif"],
+    "google_fonts_url": "https://fonts.google.com/specimen/Poppins",
+    "weights": {
+      "h1": {"weight": "Semibold", "css_weight": 600},
+      "h2": {"weight": "Medium", "css_weight": 500},
+      "expressive": {"weight": "any", "note": "Other weights allowed in creative/campaign contexts"}
+    },
+    "size_ratio_rule": "Subheading should be half the size of the headline (e.g., H1=100pt → H2=50pt)",
+    "use_for": ["Headlines", "Subheadlines", "Section titles", "Display text", "Short emphatic lines"]
+  },
+  "body": {
+    "family": "Inter",
+    "fallbacks": ["Helvetica Neue", "Arial", "sans-serif"],
+    "google_fonts_url": "https://fonts.google.com/specimen/Inter",
+    "weights": {
+      "body_default": {"weight": "Regular", "css_weight": 400},
+      "body_alt": {"weight": "Medium", "css_weight": 500},
+      "emphasis": {"weight": "Bold", "css_weight": 700, "note": "Bold for occasional emphasis only"}
+    },
+    "sizes_pt": {
+      "min": 7,
+      "recommended_min": 10,
+      "recommended_max": 14
+    },
+    "use_for": ["Body copy", "Paragraphs", "Reports", "Internal documents", "Tables", "Captions", "UI labels"]
+  },
+  "rules": {
+    "minimum_size_pt": 7,
+    "body_default_range_pt": [10, 14],
+    "subhead_to_headline_ratio": 0.5,
+    "body_to_subhead_ratio_when_poppins": 0.5,
+    "body_color_on_light": "#18181B",
+    "body_color_on_dark": "#FFFFFF",
+    "comment": "Inter is the primary body face. Poppins may be used for short body emphasis, but at 50% of subheading size and never below 7pt."
+  },
+  "css_snippet": {
+    "import": "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@500;600&display=swap');",
+    "headings": "font-family: 'Poppins', 'Helvetica Neue', Arial, sans-serif; font-weight: 600;",
+    "body": "font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; font-weight: 400;"
+  }
+}

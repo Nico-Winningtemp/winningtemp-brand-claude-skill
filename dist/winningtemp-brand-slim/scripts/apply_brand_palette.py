@@ -85,8 +85,21 @@ def brand_paragraph(paragraph, text: str, style: TypeStyle) -> None:
         brand_run(paragraph.runs[0], style)
 
 
-def brand_fill(shape, color: RGBColor) -> None:
-    """Fill a shape with a brand color and remove its border."""
+def brand_fill(shape, color: RGBColor, on_background: RGBColor | None = None) -> None:
+    """Fill a shape with a brand color and remove its border.
+
+    If `on_background` is provided, validates the pairing against brand rules.
+    Specifically: Wave (#C0DAD8) must NEVER be used on Deep Purple (#7F2696)
+    backgrounds. Raises ValueError on the forbidden pairing.
+    """
+    if on_background is not None:
+        forbidden_pairs = {(BrandColor.WAVE, BrandColor.PURPLE)}
+        if (color, on_background) in forbidden_pairs:
+            raise ValueError(
+                "Brand rule: Wave (#C0DAD8) is FORBIDDEN on Deep Purple (#7F2696) "
+                "backgrounds. Use White or Light Purple (#DDD3F2) for cards/accents on "
+                "purple slides instead. See references/colors.md."
+            )
     shape.fill.solid()
     shape.fill.fore_color.rgb = color
     shape.line.fill.background()

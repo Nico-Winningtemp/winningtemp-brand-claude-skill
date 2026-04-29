@@ -68,10 +68,29 @@ These extend and support the primary palette. They add flexibility, depth, and c
 - Large empty layout areas
 
 ### Use Wave (`#C0DAD8`) for:
-- Positive trend indicators (e.g., growth arrows, positive deltas)
-- Secondary chart series (alongside purple)
+
+**Use sparingly.** Wave is an accent, not a layout color. The brand is purple-led; Wave appears in supporting roles only.
+
+- Differentiating boxes/cards on **light backgrounds** (white, gray) when you have multiple categories of content and need to signal "this group is different from that group"
+- Positive trend indicators (e.g., growth arrows, positive deltas) on charts
+- Secondary chart series alongside purple
 - Decorative icons and small accents
 - Data visualization "good" / "above target" states
+
+### Wave: NEVER use on Dark Purple backgrounds
+
+This is a strict rule. **Do not put Wave (`#C0DAD8`) anywhere on a Deep Purple (`#7F2696`) background** — not as a card fill, not as an accent bar, not as a divider, not as a chart series. The two colors clash and break the brand's purple-led visual identity.
+
+**On Dark Purple backgrounds, use instead:**
+
+| Need | Use |
+|---|---|
+| Card / box fill | `#FFFFFF` White (high contrast) or `#DDD3F2` Light Purple (soft contrast) |
+| Subtle differentiation between cards | `#F2E9F3` Pale Purple vs `#DDD3F2` Light Purple |
+| Accent bars / dividers | `#FFFFFF` White or `#DDD3F2` Light Purple |
+| Chart accents | White, Light Purple, or solid black `#18181B` for emphasis |
+
+If you find yourself reaching for Wave on a purple slide, you almost certainly want White or Light Purple instead.
 
 ### Use Pale Purple (`#F2E9F3`) for:
 - Alternating table row backgrounds
@@ -137,11 +156,12 @@ When generating any digital artifact, verify contrast for any new color combinat
 ## Common mistakes
 
 1. **Using teal/coral instead of purple.** This skill exists partly because the March 2026 LinkedIn report did this. Wave (`#C0DAD8`) is mint-teal, but it is a *secondary accent*, not a primary background. There is no coral in the brand palette.
-2. **Using Light Purple as a CTA color.** It's a background color — too low-contrast for a button.
-3. **Putting body text in purple.** Purple is for headlines, backgrounds, CTAs. Body is always black or white.
-4. **Adding "almost on-brand" colors** (like a slightly different purple). Use the exact hex codes — drift breaks brand recognition.
-5. **Treating Warning Red as decoration.** It signals errors only. Don't use it to emphasize a positive metric.
-6. **Skipping contrast checks** when overlaying text on photos or gradients.
+2. **Putting Wave on Dark Purple backgrounds.** Wave does NOT pair with Deep Purple — not as a card, not as an accent, not as a divider. On purple, use White or Light Purple instead. (See the strict rule above.)
+3. **Using Light Purple as a CTA color.** It's a background color — too low-contrast for a button.
+4. **Putting body text in purple.** Purple is for headlines, backgrounds, CTAs. Body is always black or white.
+5. **Adding "almost on-brand" colors** (like a slightly different purple). Use the exact hex codes — drift breaks brand recognition.
+6. **Treating Warning Red as decoration.** It signals errors only. Don't use it to emphasize a positive metric.
+7. **Skipping contrast checks** when overlaying text on photos or gradients.
 
 ---
 

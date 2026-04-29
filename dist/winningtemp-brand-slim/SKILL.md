@@ -116,7 +116,8 @@ See `references/brand-values.md` for what each means and how it shows up in writ
 ## Gotchas (real failures to avoid)
 
 1. **Don't use teal/coral palettes.** The March 2026 LinkedIn Ads report used a generic dark-teal/coral theme. The brand is purple-led; Wave (`#C0DAD8`) is *secondary accent only*; there is no coral in the brand at all.
-2. **Don't use Calibri or Aptos.** The .pptx theme falls back to Aptos because Microsoft ships it; it's **not** the brand. Always set Poppins/Inter explicitly. Fonts are bundled at `assets/fonts/`.
+2. **Don't put Wave on Dark Purple backgrounds.** STRICT RULE. Wave (`#C0DAD8`) does NOT pair with Deep Purple (`#7F2696`) — not as cards, not as accent bars, not as dividers, not as chart series. On purple slides, use **White** for high-contrast cards or **Light Purple `#DDD3F2`** for soft cards. Wave is reserved for differentiating boxes on *light* layouts, growth arrows on charts, and small accents — used sparingly. (See `references/colors.md` for the full rule.)
+3. **Don't use Calibri or Aptos.** The .pptx theme falls back to Aptos because Microsoft ships it; it's **not** the brand. Always set Poppins/Inter explicitly. Fonts are bundled at `assets/fonts/`.
 3. **Don't put body copy in purple.** Purple is for headlines, backgrounds, CTAs. Body is **always** black on light or white on dark.
 4. **Don't use secondary colors in CTAs.** Light Purple, Wave, Pale Purple are support. CTAs use Purple/White/Black only.
 5. **Don't recolor the logo.** Only Deep Purple, White, or Black. Even "close to purple" is wrong.

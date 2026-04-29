@@ -31,8 +31,13 @@
     "wave": {
       "hex": "#C0DAD8",
       "rgb": [192, 218, 216],
-      "role": "Freshness accent. Use for: highlights, icons, secondary callouts, growth/positive data points. Reserve for accent — never primary.",
-      "names": ["Wave", "Mint Wave"]
+      "role": "Freshness accent — USE SPARINGLY. For differentiating boxes on LIGHT backgrounds, growth arrows on charts, small accents. NEVER pair with Deep Purple #7F2696 background.",
+      "names": ["Wave", "Mint Wave"],
+      "strict_rules": {
+        "never_on_background": ["#7F2696", "#18181B"],
+        "allowed_pairings": ["#FFFFFF", "#F1F1F1", "#F2E9F3"],
+        "comment": "Wave is an accent, not a layout color. Do NOT put Wave on Deep Purple — not as cards, not as accent bars, not as dividers, not as chart series. Use White or Light Purple instead on purple backgrounds."
+      }
     },
     "red_warning": {
       "hex": "#D64545",
@@ -62,6 +67,7 @@
     "cta_colors_forbidden": ["#F2E9F3", "#C0DAD8", "#D64545"],
     "body_text_colors": ["#18181B", "#FFFFFF"],
     "never_use_for_body_text": ["#7F2696", "#DDD3F2", "#F1F1F1", "#C0DAD8"],
+    "wave_on_purple": "FORBIDDEN — never pair Wave #C0DAD8 with Deep Purple #7F2696 background. Use White or Light Purple instead.",
     "comment": "Body copy must be Black on light or White on dark. Other brand colors may appear in display headlines/expressive contexts only."
   }
 }

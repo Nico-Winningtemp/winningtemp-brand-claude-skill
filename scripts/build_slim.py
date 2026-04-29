@@ -25,6 +25,7 @@ Outputs:
 from __future__ import annotations
 
 import argparse
+import re
 import shutil
 import sys
 import urllib.parse
@@ -59,22 +60,104 @@ KEEP_ASSET_DIRS = [
 ]
 
 
+def sanitize_part(name: str) -> str:
+    """Sanitize a single path segment (file OR directory name).
+    Claude.ai's skill-zip validator rejects paths with spaces, parens, '+', etc.
+    Rule: lowercase, replace [\\s_]+ with '-', strip parens / plus / apostrophes,
+    collapse repeated hyphens. Preserves the file extension.
+    """
+    if "." in name and not name.startswith("."):
+        stem, _, ext = name.rpartition(".")
+        ext = "." + ext.lower()
+    else:
+        stem, ext = name, ""
+    stem = stem.lower()
+    stem = re.sub(r"[()+'\"]", "", stem)
+    stem = re.sub(r"[\s_]+", "-", stem)
+    stem = re.sub(r"-+", "-", stem).strip("-")
+    return stem + ext
+
+
+def sanitize_relative(rel: Path) -> Path:
+    """Sanitize every segment of a relative path."""
+    return Path(*[sanitize_part(p) for p in rel.parts])
+
+
+def copy_tree_sanitized(src: Path, dst: Path):
+    """Recursively copy src → dst, sanitizing both file and directory names."""
+    if not src.exists():
+        return
+    for item in src.rglob("*"):
+        if item.is_file():
+            rel = item.relative_to(src)
+            target = dst / sanitize_relative(rel)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(item, target)
+
+
 def copy_tree(src: Path, dst: Path):
+    """Plain mirror without sanitization (for source-controlled paths like references/, scripts/)."""
     if not src.exists():
         return
     shutil.copytree(src, dst, dirs_exist_ok=True)
 
 
-def copy_dir_filter(src: Path, dst: Path, allowed_suffixes: set[str]):
+def copy_dir_filter(src: Path, dst: Path, allowed_suffixes: set[str], sanitize: bool = False):
     """Mirror src → dst, copying only files whose suffix is in allowed_suffixes."""
     if not src.exists():
         return
     for item in src.rglob("*"):
         if item.is_file() and item.suffix.lower() in allowed_suffixes:
             rel = item.relative_to(src)
+            if sanitize:
+                rel = sanitize_relative(rel)
             target = dst / rel
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(item, target)
+
+
+def patch_apply_brand_palette_for_slim(slim_apply_path: Path):
+    """The slim version sanitizes logo filenames (no spaces, no parens). The
+    full repo's apply_brand_palette.py constructs paths from human-readable
+    folder names ("Deep purple", "Without tagline") that no longer exist in
+    slim. Replace the add_logo() body with a sanitized-path version."""
+    if not slim_apply_path.exists():
+        return
+    src = slim_apply_path.read_text()
+    sanitized_add_logo = '''def add_logo(slide, left, top, width, color: str = "deep-purple", with_tagline: bool = False):
+    """Add the Winningtemp logo to a slide.
+
+    color: "deep-purple" (default) | "white" | "black"
+    with_tagline: True to use the variant with the SUCCEED TOGETHER tagline
+
+    Slim variant: filenames are sanitized (lowercase, hyphens, no parens).
+    """
+    color_map = {"deep-purple": "deep-purple", "white": "white", "black": "black"}
+    if color not in color_map:
+        raise ValueError(f"color must be one of {list(color_map)}; got {color!r}")
+    color_seg = color_map[color]
+    candidates = []
+    if with_tagline:
+        candidates.append(LOGOS / "variations" / "winningtemp-logo" / color_seg / f"winningtemp-rgb-{color_seg}.png")
+        candidates.append(LOGOS / "variations" / "winningtemp-logo-tagline" / f"{color_seg}-tagline" / f"winningtemp-rgb-{color_seg}-tagline.png")
+    else:
+        candidates.append(LOGOS / "variations" / "winningtemp-logo-without-tagline" / f"{color_seg}-without-tagline" / f"winningtemp-rgb-{color_seg}-without-tagline.png")
+        candidates.append(LOGOS / "standard" / f"winningtemp-rgb-{color_seg}-without-tagline.png")
+        candidates.append(LOGOS / "standard" / f"winningtemp-rgb-{color_seg}-without-tagline-1.png")
+    for path in candidates:
+        if path.exists():
+            return slide.shapes.add_picture(str(path), left, top, width=width)
+    raise FileNotFoundError(f"Logo not found. Tried: {[str(c) for c in candidates]}")
+'''
+    # Replace from "def add_logo" to the next top-level def (or EOF)
+    new_src = re.sub(
+        r'def add_logo\(slide.*?(?=\ndef [a-z_]|\nclass |\Z)',
+        sanitized_add_logo + '\n\n',
+        src,
+        count=1,
+        flags=re.DOTALL,
+    )
+    slim_apply_path.write_text(new_src)
 
 
 def patch_skill_md_for_slim(slim_skill_md: Path):
@@ -231,18 +314,22 @@ def main():
             shutil.copy2(src, slim_assets / f)
     print(f"  ✓ Copied {len(KEEP_ASSET_FILES)} asset spec files")
 
-    # 4. Selected asset dirs (full)
+    # 4. Selected asset dirs (full) — sanitize filenames so Claude.ai's zip validator accepts them
     for rel in KEEP_ASSET_DIRS:
-        copy_tree(ROOT / "assets" / rel, slim_assets / rel)
+        copy_tree_sanitized(ROOT / "assets" / rel, slim_assets / rel)
         n_files = sum(1 for _ in (slim_assets / rel).rglob("*") if _.is_file())
-        print(f"  ✓ Copied assets/{rel}/ ({n_files} files)")
+        print(f"  ✓ Copied assets/{rel}/ ({n_files} files, names sanitized)")
 
-    # 5. Logos: PNG-only filter
+    # 5. Logos: PNG-only filter, sanitized
     for rel in KEEP_ASSET_DIRS_PNG_ONLY:
         copy_dir_filter(ROOT / "assets" / rel, slim_assets / rel,
-                        allowed_suffixes={".png", ".svg"})
+                        allowed_suffixes={".png", ".svg"}, sanitize=True)
         n_files = sum(1 for _ in (slim_assets / rel).rglob("*") if _.is_file())
-        print(f"  ✓ Copied assets/{rel}/ — PNG/SVG only ({n_files} files)")
+        print(f"  ✓ Copied assets/{rel}/ — PNG/SVG only ({n_files} files, names sanitized)")
+
+    # 5b. Patch slim's apply_brand_palette.py to use sanitized logo paths
+    patch_apply_brand_palette_for_slim(SLIM / "scripts" / "apply_brand_palette.py")
+    print(f"  ✓ Patched slim apply_brand_palette.py to reference sanitized logo paths")
 
     # 6. Fonts placeholder README
     add_slim_fonts_readme(SLIM)

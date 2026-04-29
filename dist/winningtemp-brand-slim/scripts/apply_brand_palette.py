@@ -110,35 +110,30 @@ def brand_card(slide, left, top, width, height,
 
 
 def add_logo(slide, left, top, width, color: str = "deep-purple", with_tagline: bool = False):
-    """
-    Add the Winningtemp logo to a slide.
+    """Add the Winningtemp logo to a slide.
 
     color: "deep-purple" (default) | "white" | "black"
     with_tagline: True to use the variant with the SUCCEED TOGETHER tagline
+
+    Slim variant: filenames are sanitized (lowercase, hyphens, no parens).
     """
-    suffix = " tagline" if with_tagline else " (Without tagline)"
-    color_folder_map = {
-        "deep-purple": "Deep purple",
-        "white":       "White",
-        "black":       "Black",
-    }
-    if color not in color_folder_map:
-        raise ValueError(f"color must be one of {list(color_folder_map)}; got {color!r}")
-    folder = color_folder_map[color]
-
+    color_map = {"deep-purple": "deep-purple", "white": "white", "black": "black"}
+    if color not in color_map:
+        raise ValueError(f"color must be one of {list(color_map)}; got {color!r}")
+    color_seg = color_map[color]
+    candidates = []
     if with_tagline:
-        path = LOGOS / "variations" / "Winningtemp Logo" / folder / f"Winningtemp_RGB {folder}.png"
-        if not path.exists():
-            # Fallback to the explicit (tagline) folder
-            path = LOGOS / "variations" / "Winningtemp Logo (tagline)" / f"{folder} (tagline)" / f"Winningtemp_RGB {folder} tagline.png"
+        candidates.append(LOGOS / "variations" / "winningtemp-logo" / color_seg / f"winningtemp-rgb-{color_seg}.png")
+        candidates.append(LOGOS / "variations" / "winningtemp-logo-tagline" / f"{color_seg}-tagline" / f"winningtemp-rgb-{color_seg}-tagline.png")
     else:
-        path = LOGOS / "variations" / "Winningtemp Logo (Without tagline)" / f"{folder} (Without tagline)" / f"Winningtemp_RGB {folder} (Without tagline).png"
-        if not path.exists():
-            path = LOGOS / "standard" / f"Winningtemp_RGB {folder} (Without tagline).png"
+        candidates.append(LOGOS / "variations" / "winningtemp-logo-without-tagline" / f"{color_seg}-without-tagline" / f"winningtemp-rgb-{color_seg}-without-tagline.png")
+        candidates.append(LOGOS / "standard" / f"winningtemp-rgb-{color_seg}-without-tagline.png")
+        candidates.append(LOGOS / "standard" / f"winningtemp-rgb-{color_seg}-without-tagline-1.png")
+    for path in candidates:
+        if path.exists():
+            return slide.shapes.add_picture(str(path), left, top, width=width)
+    raise FileNotFoundError(f"Logo not found. Tried: {[str(c) for c in candidates]}")
 
-    if not path.exists():
-        raise FileNotFoundError(f"Logo not found: {path}")
-    return slide.shapes.add_picture(str(path), left, top, width=width)
 
 
 def add_icon(slide, icon_name: str, left, top, width):

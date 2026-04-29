@@ -4,6 +4,15 @@ Reusable branded PPTX builder. Replaces ad-hoc deck generators (like the
 generic-themed generate_slides.py from March 2026) with one that produces
 on-brand decks by default.
 
+Brand convention (from references/deck-design.md):
+- White background by default. Purple is the EXCEPTION, not the rule.
+- TitleSlide and EndSlide use Deep Purple (impact moments).
+- SectionSlide uses Light Purple (a softer impact divider).
+- ContentSlide, KPISlide, TwoColumnSlide all default to WHITE backgrounds with
+  Deep Purple headlines and accent bars — the brand-faithful pattern.
+- Budget: max ~25% of slides should use a purple background. The builder warns
+  if this is exceeded.
+
 Two ways to use:
 
 1) CLI quick-test:
@@ -14,9 +23,10 @@ Two ways to use:
        from generate_branded_pptx import build_deck, TitleSlide, KPISlide, ContentSlide
 
        build_deck("report.pptx", slides=[
-           TitleSlide("Q1 Results", "April 2026 | Winningtemp"),
-           KPISlide("Engagement", [("MAU", "12,456"), ("CSAT", "94%")]),
-           ContentSlide("Findings", ["Point one.", "Point two."]),
+           TitleSlide("Q1 Results", "April 2026 | Winningtemp"),  # purple
+           KPISlide("Engagement", [("MAU", "12,456"), ("CSAT", "94%")]),  # white
+           ContentSlide("Findings", ["Point one.", "Point two."]),         # white
+           EndSlide("Questions?"),                                          # purple
        ])
 
 The script always opens the official template
@@ -254,8 +264,43 @@ def _wipe_template_slides(prs) -> None:
             pass
 
 
+PURPLE_BG_SLIDE_TYPES = (TitleSlide, EndSlide)
+LIGHT_PURPLE_BG_SLIDE_TYPES = (SectionSlide,)
+
+
+def _check_purple_budget(slides: list[SlideSpec]) -> None:
+    """Warn if more than 25% of slides use a Deep Purple background.
+
+    Brand convention is white-by-default; purple is for impact moments only
+    (title slide, end slide, occasional section dividers and hero callouts).
+    See references/deck-design.md for the rationale and budget table.
+    """
+    n = len(slides)
+    if n == 0:
+        return
+    purple_count = sum(1 for s in slides if isinstance(s, PURPLE_BG_SLIDE_TYPES))
+    pct = purple_count * 100 / n
+    if pct > 25:
+        print(
+            f"⚠ Brand-budget warning: {purple_count} of {n} slides ({pct:.0f}%) use a "
+            f"Deep Purple background. The brand convention caps this at ~25%. "
+            f"Reserve purple for the title slide, end slide, and at most one hero callout. "
+            f"See references/deck-design.md.",
+            file=sys.stderr,
+        )
+
+
 def build_deck(output_path: str | Path, slides: list[SlideSpec]) -> Path:
-    """Build a branded deck from a list of slide specs and save to output_path."""
+    """Build a branded deck from a list of slide specs and save to output_path.
+
+    Default backgrounds (per references/deck-design.md):
+      - TitleSlide, EndSlide   → Deep Purple
+      - SectionSlide            → Light Purple
+      - ContentSlide, KPISlide, TwoColumnSlide → White (brand default)
+
+    Warns to stderr if more than 25% of slides have a Deep Purple background.
+    """
+    _check_purple_budget(slides)
     prs = open_branded_template()
     _wipe_template_slides(prs)
     for spec in slides:

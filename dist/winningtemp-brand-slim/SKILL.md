@@ -28,6 +28,7 @@ winningtemp-brand/
 │   ├── icons.md             95-icon library inventory and usage
 │   ├── brand-values.md      4 values (Curious, Results Together, Passion, Responsibility)
 │   ├── templates.md         PPTX / Word / email-signature usage
+│   ├── deck-design.md       slide-layout patterns: white default, purple as exception
 │   ├── graphic-elements.md  shapes, image masks, the symbol as graphic
 │   ├── imagery-guidelines.md photography style and selection rules
 │   ├── voice-and-tone.md    brand voice, EN/SE/NO localization
@@ -117,6 +118,7 @@ See `references/brand-values.md` for what each means and how it shows up in writ
 
 1. **Don't use teal/coral palettes.** The March 2026 LinkedIn Ads report used a generic dark-teal/coral theme. The brand is purple-led; Wave (`#C0DAD8`) is *secondary accent only*; there is no coral in the brand at all.
 2. **Don't put Wave on Dark Purple backgrounds.** STRICT RULE. Wave (`#C0DAD8`) does NOT pair with Deep Purple (`#7F2696`) — not as cards, not as accent bars, not as dividers, not as chart series. On purple slides, use **White** for high-contrast cards or **Light Purple `#DDD3F2`** for soft cards. Wave is reserved for differentiating boxes on *light* layouts, growth arrows on charts, and small accents — used sparingly. (See `references/colors.md` for the full rule.)
+3. **Don't default to dark-purple slide backgrounds.** STRICT RULE. The brand convention is **white-by-default, purple for impact only**. Reserve Deep Purple backgrounds for: title slide, end slide, optional section dividers, and at most one "hero stat" callout. Budget: max ~25% of slides on purple. The remaining 75%+ are white with purple headlines and accents. The Visual identity master document is 100% white-background. (See `references/deck-design.md` for slide patterns and the budget table.)
 3. **Don't use Calibri or Aptos.** The .pptx theme falls back to Aptos because Microsoft ships it; it's **not** the brand. Always set Poppins/Inter explicitly. Fonts are bundled at `assets/fonts/`.
 3. **Don't put body copy in purple.** Purple is for headlines, backgrounds, CTAs. Body is **always** black on light or white on dark.
 4. **Don't use secondary colors in CTAs.** Light Purple, Wave, Pale Purple are support. CTAs use Purple/White/Black only.
